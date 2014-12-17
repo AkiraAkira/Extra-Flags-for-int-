@@ -4,6 +4,8 @@
 // @description Extra Flags for int
 // @include     http*://boards.4chan.org/int/*
 // @exclude     http*://boards.4chan.org/int/catalog
+// @include     http*://boards.4chan.org/sp/*
+// @exclude     http*://boards.4chan.org/sp/catalog
 // @version     0.7
 // @grant       GM_xmlhttpRequest
 // @grant       GM_registerMenuCommand
@@ -200,13 +202,14 @@ function onFlagsLoad(response) {
 
 /* fetch flags from db */
 function resolveRefFlags() {
+	var boardID = window.location.pathname.split('/')[1];
+	console.log(boardID);
 	GM_xmlhttpRequest({
 		method:     "POST",
-		url:        "http://flaghunters.x10host.com/get_flags.php",
+		url:        "http://flaghunters.x10host.com/get_flags2.php",
 		data:       "post_nrs=" + encodeURIComponent (postNrs)
-					//+ "&" + "board=" + encodeURIComponent (e.detail.boardID)
-					//+ "&" + "region=" + encodeURIComponent (region)
-		,
+					+ "&" + "board=" + encodeURIComponent (boardID)
+					,
 		headers:    {
 			"Content-Type": "application/x-www-form-urlencoded"
 		},
@@ -224,7 +227,7 @@ document.addEventListener('QRPostSuccessful', function(e) {
 	setTimeout(function () {
 		GM_xmlhttpRequest({
 			method:     "POST",
-			url:        "http://flaghunters.x10host.com/post_flag.php",
+			url:        "http://flaghunters.x10host.com/post_flag2.php",
 			data:       "post_nr=" + encodeURIComponent (e.detail.postID)
 						+ "&" + "board=" + encodeURIComponent (e.detail.boardID)
 						+ "&" + "region=" + encodeURIComponent (region)
@@ -251,7 +254,7 @@ document.addEventListener('4chanQRPostSuccess', function(e) {
 	setTimeout(function () {
 		GM_xmlhttpRequest({
 			method:     "POST",
-			url:        "http://flaghunters.x10host.com/post_flag.php",
+			url:        "http://flaghunters.x10host.com/post_flag2.php",
 			data:       "post_nr=" + encodeURIComponent (evDetail.postId)
 						+ "&" + "board=" + encodeURIComponent (boardID)
 						+ "&" + "region=" + encodeURIComponent (region)
